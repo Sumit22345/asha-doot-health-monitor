@@ -9,7 +9,7 @@ import json
 
 class SMSService:
     """Handle SMS notifications using various SMS APIs"""
-    
+
     def __init__(self):
         self.api_configs = {
             'textlocal': {
@@ -26,7 +26,7 @@ class SMSService:
                 'auth_token': 'YOUR_TWILIO_AUTH_TOKEN'
             }
         }
-    
+
     def send_sms_textlocal(self, phone_numbers, message):
         """Send SMS using TextLocal API (Popular in India)"""
         try:
@@ -50,7 +50,7 @@ class SMSService:
             }
         except Exception as e:
             return {'status': 'error', 'message': str(e), 'provider': 'TextLocal'}
-    
+
     def send_sms_msg91(self, phone_numbers, message):
         """Send SMS using MSG91 API (Indian SMS provider)"""
         try:
@@ -72,7 +72,7 @@ class SMSService:
             }
         except Exception as e:
             return {'status': 'error', 'message': str(e), 'provider': 'MSG91'}
-    
+
     def send_emergency_alert(self, phone_numbers, risk_level, location, cases, turbidity):
         """Send emergency health alert SMS"""
         if risk_level == "High":
@@ -89,12 +89,12 @@ class SMSService:
             result2 = self.send_sms_msg91(phone_numbers, message)
             results.append(result2)
         return results
-    
+
     def send_daily_report(self, phone_numbers, report_data):
         """Send daily health summary report"""
         message = (f"📊 Daily Health Report\nDate: {report_data.get('date', 'Today')}\nTotal Cases: {report_data.get('total_cases', 0)}\nHigh Risk Areas: {report_data.get('high_risk_areas', 0)}\nWater Quality Issues: {report_data.get('water_issues', 0)}\nAction Required: {report_data.get('action_needed', 'None')}\n-ASHA-doot Daily Summary")
         return self.send_sms_textlocal(phone_numbers, message)
-    
+
     def _simulate_sms_response(self, phone_numbers, message, provider):
         """Simulate SMS response for demo purposes"""
         return {
@@ -106,7 +106,7 @@ class SMSService:
             'timestamp': datetime.now().isoformat(),
             'demo_mode': True
         }
-    
+
     def validate_phone_numbers(self, phone_numbers):
         """Validate Indian phone numbers"""
         valid_numbers = []
@@ -122,7 +122,7 @@ class SMSService:
             else:
                 invalid_numbers.append(number)
         return {'valid': valid_numbers, 'invalid': invalid_numbers, 'total_valid': len(valid_numbers)}
-    
+
     def get_sms_status(self):
         """Get SMS service status"""
         return {
